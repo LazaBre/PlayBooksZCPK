@@ -1,19 +1,16 @@
 ---
-- name: Get MAC addresses from Linux Mint computers
-  hosts: mint_computers
+- name: Check available memory on Linux Mint computers
+  hosts: all
   gather_facts: yes
   tasks:
-    - name: Gather network interface facts
-      ansible.builtin.setup:
-        gather_subset:
-          - network
+    - name: Display total memory (MB)
+      debug:
+        msg: "Total Memory: {{ ansible_facts['ansible_memory_mb']['real']['total'] }} MB"
 
-    - name: Display MAC addresses of network interfaces
+    - name: Display free memory (MB)
       debug:
-        msg: "{{ ansible_facts['ansible_interfaces'] }}"
-    
-    - name: Print MAC addresses
+        msg: "Free Memory: {{ ansible_facts['ansible_memory_mb']['real']['free'] }} MB"
+
+    - name: Display available memory (MB)
       debug:
-        msg: "{{ item }} : {{ ansible_facts['ansible_' + item]['macaddress'] }}"
-      loop: "{{ ansible_facts['ansible_interfaces'] }}"
-      when: ansible_facts['ansible_' + item]['macaddress'] is defined
+        msg: "Available Memory: {{ ansible_facts['ansible_memory_mb']['real']['available'] }} MB"
