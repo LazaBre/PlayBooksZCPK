@@ -1,7 +1,6 @@
 ---
 - name: Create file.txt and write to it on all machines
   hosts: all
-  become: yes  # Ako je potrebno da imate privilegije sudo
   tasks:
     - name: Ensure file.txt exists on Desktop
       file:
