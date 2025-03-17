@@ -1,0 +1,7 @@
+---
+- name: Ping Linux Mint computers
+  hosts: all
+  gather_facts: no
+  tasks:
+    - name: Ping the target host
+      ansible.builtin.ping:
