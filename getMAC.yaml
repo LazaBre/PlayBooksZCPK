@@ -1,8 +1,16 @@
 ---
-- name: Get MAC address of the machine
+- name: Create file.txt and write to it on all machines
   hosts: all
-  gather_facts: yes
+  become: yes  # Ako je potrebno da imate privilegije sudo
   tasks:
-    - name: Display the MAC address of the machine
-      debug:
-        msg: "MAC address is {{ ansible_facts.interfaces.eth0.macaddress }}"
+    - name: Ensure file.txt exists on Desktop
+      file:
+        path: "/home/{{ ansible_user }}/Desktop/file.txt"
+        state: touch
+        mode: '0644'
+
+    - name: Write 'test' into file.txt
+      copy:
+        content: "test\n"
+        dest: "/home/{{ ansible_user }}/Desktop/file.txt"
+        mode: '0644'
