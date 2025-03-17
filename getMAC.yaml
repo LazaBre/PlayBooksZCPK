@@ -1,0 +1,8 @@
+---
+- name: Get MAC address of the machine
+  hosts: all
+  gather_facts: yes
+  tasks:
+    - name: Display the MAC address of the machine
+      debug:
+        msg: "MAC address is {{ ansible_facts.interfaces.eth0.macaddress }}"
