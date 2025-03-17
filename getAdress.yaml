@@ -1,8 +1,19 @@
 ---
-- name: Get MAC address of the machine
-  hosts: all
+- name: Get MAC addresses from Linux Mint computers
+  hosts: mint_computers
   gather_facts: yes
   tasks:
-    - name: Display the MAC address of the machine
+    - name: Gather network interface facts
+      ansible.builtin.setup:
+        gather_subset:
+          - network
+
+    - name: Display MAC addresses of network interfaces
       debug:
-        msg: "MAC address is {{ ansible_facts.interfaces.enp3s0.macaddress }}"
+        msg: "{{ ansible_facts['ansible_interfaces'] }}"
+    
+    - name: Print MAC addresses
+      debug:
+        msg: "{{ item }} : {{ ansible_facts['ansible_' + item]['macaddress'] }}"
+      loop: "{{ ansible_facts['ansible_interfaces'] }}"
+      when: ansible_facts['ansible_' + item]['macaddress'] is defined
