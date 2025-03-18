@@ -10,7 +10,7 @@
     - name: Install MeshCentral Agent
       win_package:
         path: C:\Temp\meshagent-x64.msi
-        product_id: "{D4A111F5-1F79-4D1D-A4A9-3AB555EC4E72}"
+        #product_id: "{D4A111F5-1F79-4D1D-A4A9-3AB555EC4E72}"
         state: present
 
     - name: Remove installer after installation
