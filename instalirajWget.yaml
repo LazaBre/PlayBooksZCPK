@@ -12,3 +12,5 @@
       become_user: Admin
       environment:
         HOME: /tmp
+      vars:
+        ansible_remote_tmp: /tmp
