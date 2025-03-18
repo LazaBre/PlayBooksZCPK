@@ -1,0 +1,30 @@
+---
+- name: Install MeshCentral Agent on Windows 10
+  hosts: windows
+  tasks:
+    - name: Download MeshCentral Agent installer
+      win_get_url:
+        url: https://github.com/Ylianst/MeshCentral/releases/download/v0.9.5/meshagent-x64.msi
+        dest: C:\Temp\meshagent-x64.msi
+
+    - name: Install MeshCentral Agent
+      win_package:
+        path: C:\Temp\meshagent-x64.msi
+        product_id: "{D4A111F5-1F79-4D1D-A4A9-3AB555EC4E72}"
+        state: present
+
+    - name: Remove installer after installation
+      win_file:
+        path: C:\Temp\meshagent-x64.msi
+        state: absent
+
+    - name: Start MeshCentral Agent service
+      win_service:
+        name: MeshAgent
+        state: started
+        start_mode: auto
+
+    - name: Configure MeshCentral Agent
+      win_command: C:\Program Files\MeshCentral\meshagent.exe -url 192.168.1.16:3000
+      args:
+        creates: C:\Program Files\MeshCentral\meshagent.exe
