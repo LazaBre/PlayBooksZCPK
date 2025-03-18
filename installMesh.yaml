@@ -1,44 +1,25 @@
 ---
-- name: Install MeshCentral Agent on Windows 10
+- name: Install and start MeshCentral Agent on Windows 10
   hosts: all
   tasks:
     - name: Download MeshCentral Agent installer
       win_get_url:
-        url: http://192.168.1.16:1024/meshagents?id=4&meshid=GPIIgDm@irxPWceN@PzQC6IhEnwa0$LDmQNQvFsZEh10pttKL6rzoMzCxgZyhPv8&installflags=0
-        dest: C:\Temp\meshagent-x64.exe
+        url: "http://192.168.1.16:1024/meshagents?id=4&meshid=GPIIgDm@irxPWceN@PzQC6IhEnwa0$LDmQNQvFsZEh10pttKL6rzoMzCxgZyhPv8&installflags=0"
+        dest: "C:\\Temp\\meshagent-x64.exe"
 
     - name: Install MeshCentral Agent
-      win_command: C:\Temp\meshagent-x64.exe /S -install
+      win_command: "C:\\Temp\\meshagent-x64.exe /S"  # /S za tihu instalaciju
       register: install_result
       ignore_errors: yes
 
-    - name: Debug install result
-      debug:
-        var: install_result
-
     - name: Remove installer after installation
       win_file:
-        path: C:\Temp\meshagent-x64.exe
+        path: "C:\\Temp\\meshagent-x64.exe"
         state: absent
       when: install_result.changed
 
-    - name: Register MeshCentral service manually (if not installed)
-      win_command: sc create MeshAgent binPath= "C:\Program Files\MeshCentral\meshagent.exe" start= auto
-      when: install_result.rc == 0 and install_result.stderr is not defined
-      register: sc_create_result
-
-    - name: Debug SC create result
-      debug:
-        var: sc_create_result
-
-    - name: Start MeshCentral Agent service manually
+    - name: Start MeshCentral Agent service
       win_service:
         name: MeshAgent
         state: started
         start_mode: auto
-      when: sc_create_result.rc == 0
-
-    - name: Configure MeshCentral Agent
-      win_command: C:\Program Files\MeshCentral\meshagent.exe -url 192.168.1.16:3000
-      args:
-        creates: C:\Program Files\MeshCentral\meshagent.exe
