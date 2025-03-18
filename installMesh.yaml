@@ -8,7 +8,7 @@
         dest: C:\Temp\meshagent-x64.exe
 
     - name: Install MeshCentral Agent
-      win_command: C:\Temp\meshagent-x64.exe /S
+      win_command: C:\Temp\meshagent-x64.exe /S -install
       register: install_result
       ignore_errors: yes  # Da bi se ispratile greške ako dođe do problema
 
