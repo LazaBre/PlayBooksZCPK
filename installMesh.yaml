@@ -1,6 +1,6 @@
 ---
 - name: Install MeshCentral Agent on Windows 10
-  hosts: windows
+  hosts: all
   tasks:
     - name: Download MeshCentral Agent installer
       win_get_url:
