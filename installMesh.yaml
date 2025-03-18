@@ -10,7 +10,7 @@
     - name: Install MeshCentral Agent
       win_command: C:\Temp\meshagent-x64.exe /S -install
       register: install_result
-      ignore_errors: yes  # Da bi se ispratile greške ako dođe do problema
+      ignore_errors: yes
 
     - name: Debug install result
       debug:
@@ -22,11 +22,21 @@
         state: absent
       when: install_result.changed
 
-    - name: Start MeshCentral Agent service
+    - name: Register MeshCentral service manually (if not installed)
+      win_command: sc create MeshAgent binPath= "C:\Program Files\MeshCentral\meshagent.exe" start= auto
+      when: install_result.rc == 0 and install_result.stderr is not defined
+      register: sc_create_result
+
+    - name: Debug SC create result
+      debug:
+        var: sc_create_result
+
+    - name: Start MeshCentral Agent service manually
       win_service:
         name: MeshAgent
         state: started
         start_mode: auto
+      when: sc_create_result.rc == 0
 
     - name: Configure MeshCentral Agent
       win_command: C:\Program Files\MeshCentral\meshagent.exe -url 192.168.1.16:3000
