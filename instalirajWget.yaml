@@ -1,0 +1,14 @@
+---
+- name: Instalacija wget-a koristeći Admin nalog
+  hosts: all
+  gather_facts: no
+
+  tasks:
+    - name: Instaliraj wget
+      ansible.builtin.apt:
+        name: wget
+        state: present
+      become: yes
+      become_user: Admin
+      environment:
+        HOME: /tmp
