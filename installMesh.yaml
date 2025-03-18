@@ -8,15 +8,19 @@
         dest: C:\Temp\meshagent-x64.exe
 
     - name: Install MeshCentral Agent
-      win_package:
-        path: C:\Temp\meshagent-x64.exe
-        #product_id: "{D4A111F5-1F79-4D1D-A4A9-3AB555EC4E72}"
-        state: present
+      win_command: C:\Temp\meshagent-x64.exe /S
+      register: install_result
+      ignore_errors: yes  # Da bi se ispratile greške ako dođe do problema
+
+    - name: Debug install result
+      debug:
+        var: install_result
 
     - name: Remove installer after installation
       win_file:
         path: C:\Temp\meshagent-x64.exe
         state: absent
+      when: install_result.changed
 
     - name: Start MeshCentral Agent service
       win_service:
