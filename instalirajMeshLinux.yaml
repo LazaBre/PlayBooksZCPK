@@ -2,6 +2,10 @@
 - name: Install MeshCentral Agent on all machines using direct bash command
   hosts: all
   become: yes  # Potrebne su root privilegije za instalaciju
+  environment:
+        HOME: /tmp
+      vars:
+        ansible_remote_tmp: /tmp
   tasks:
     - name: Run bash command to download and install MeshCentral agent
       shell: |
@@ -11,13 +15,7 @@
         warn: no      # Ignoriši upozorenja, posebno u slučaju grešaka u komandama
       register: install_output
       ignore_errors: yes  # Ako dođe do greške, playbook će nastaviti
-      become: yes
-      become_user: Admin
-      environment:
-        HOME: /tmp
-      vars:
-        ansible_remote_tmp: /tmp
-      
+
     - name: Output installation result
       debug:
         var: install_output.stdout  # Ispisuje izlaz iz komande
