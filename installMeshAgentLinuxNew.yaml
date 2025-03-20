@@ -27,6 +27,13 @@
 
     - name: Pokretanje MeshAgent instalacije
       ansible.builtin.command:
-        cmd: "{{ ansible_remote_tmp }}/meshinstall.sh https://192.168.1.16:1025 'qEthAYo$yu4xp0n9yjlRny9JJFJTKNDdJjaFaymEY9wCgKEpPK7@5l2AARxutNmu'"
-        creates: "{{ ansible_remote_tmp }}/meshinstall.sh"
+        cmd:
+          - "{{ ansible_remote_tmp }}/meshinstall.sh"
+          - "https://192.168.1.16:1025"
+          - "'qEthAYo$yu4xp0n9yjlRny9JJFJTKNDdJjaFaymEY9wCgKEpPK7@5l2AARxutNmu'"
+      register: meshagent_install_output
       when: not meshagent_installed.stat.exists
+    
+    - name: Prikazivanje izlaza iz instalacije
+      debug:
+        var: meshagent_install_output
