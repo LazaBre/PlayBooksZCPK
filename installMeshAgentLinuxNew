@@ -1,0 +1,23 @@
+---
+- name: Instalacija MeshAgent na Linux Mint
+  hosts: all
+  become: true
+  vars:
+    ansible_remote_tmp: /tmp  # Postavite privremeni direktorijum
+
+  tasks:
+    - name: Preuzimanje MeshAgent skripte
+      ansible.builtin.get_url:
+        url: "https://192.168.1.16:1025/meshagents?script=1"
+        dest: "{{ ansible_remote_tmp }}/meshinstall.sh"
+        validate_certs: no  # Ovdje se koristi 'no' jer je SSL sertifikat samopotpisan
+
+    - name: Dodeljivanje dozvola za izvršenje skripte
+      ansible.builtin.file:
+        path: "{{ ansible_remote_tmp }}/meshinstall.sh"
+        mode: '0755'
+
+    - name: Pokretanje MeshAgent instalacije
+      ansible.builtin.command:
+        cmd: "{{ ansible_remote_tmp }}/meshinstall.sh https://192.168.1.16:1025 'qEthAYo$yu4xp0n9yjlRny9JJFJTKNDdJjaFaymEY9wCgKEpPK7@5l2AARxutNmu'"
+        creates: "{{ ansible_remote_tmp }}/meshinstall.sh"  # Ovdje možete dodati proveru da li je instalacija već završena
