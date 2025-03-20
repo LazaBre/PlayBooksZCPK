@@ -2,13 +2,14 @@
 - name: Instalacija MeshAgent na Linux Mint
   hosts: all
   become: true
+  become_user: Admin  # Možete dodati ili koristiti root
   vars:
-    ansible_remote_tmp: /tmp  # Postavite privremeni direktorijum
+    ansible_remote_tmp: /tmp
 
   tasks:
     - name: Proveri da li je MeshAgent instaliran
       ansible.builtin.stat:
-        path: "/usr/local/mesh_services/meshagent/meshagent"  # Putanja do MeshAgent izvršnog fajla
+        path: "/usr/local/mesh_services/meshagent/meshagent"
       register: meshagent_installed
 
     - name: Preuzimanje MeshAgent skripte ako nije instaliran
@@ -16,16 +17,16 @@
         url: "https://192.168.1.16:1025/meshagents?script=1"
         dest: "{{ ansible_remote_tmp }}/meshinstall.sh"
         validate_certs: no
-      when: not meshagent_installed.stat.exists  # Ova komanda se izvršava samo ako MeshAgent nije instaliran
+      when: not meshagent_installed.stat.exists
 
     - name: Dodeljivanje dozvola za izvršenje skripte
       ansible.builtin.file:
         path: "{{ ansible_remote_tmp }}/meshinstall.sh"
         mode: '0755'
-      when: not meshagent_installed.stat.exists  # Dodeljuju se dozvole samo ako MeshAgent nije instaliran
+      when: not meshagent_installed.stat.exists
 
     - name: Pokretanje MeshAgent instalacije
       ansible.builtin.command:
         cmd: "{{ ansible_remote_tmp }}/meshinstall.sh https://192.168.1.16:1025 'qEthAYo$yu4xp0n9yjlRny9JJFJTKNDdJjaFaymEY9wCgKEpPK7@5l2AARxutNmu'"
-        creates: "{{ ansible_remote_tmp }}/meshinstall.sh"  # Ovdje možete dodati proveru da li je instalacija već završena
-      when: not meshagent_installed.stat.exists  # Pokreće instalaciju samo ako MeshAgent nije instaliran
+        creates: "{{ ansible_remote_tmp }}/meshinstall.sh"
+      when: not meshagent_installed.stat.exists
