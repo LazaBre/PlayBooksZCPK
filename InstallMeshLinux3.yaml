@@ -16,9 +16,9 @@
         path: /tmp/meshinstall.sh
         mode: '755'
         
-    - name: Execute the script
-      command: sh /tmp/meshinstall.sh https://192.168.1.16:1025 'qEthAYo$yu4xp0n9yjlRny9JJFJTKNDdJjaFaymEY9wCgKEpPK7@5l2AARxutNmu'
-
+    - name: Execute script on remote_machine
+      script: sh /tmp/meshinstall.sh https://192.168.1.16:1025 'qEthAYo$yu4xp0n9yjlRny9JJFJTKNDdJjaFaymEY9wCgKEpPK7@5l2AARxutNmu'
+      
     - name: Clean up the installation script
       file:
         path: /tmp/meshinstall.sh
