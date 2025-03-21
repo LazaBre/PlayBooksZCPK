@@ -1,6 +1,9 @@
 ---
-- name: Pokretanje installmesh.sh sa root privilegijama preko Admin usera
-  hosts: all         # SSH se kači kao Admin user          # Eksplicitno postaje root
+- name: Pokretanje installmesh.sh sa sudo privilegijama preko Admin usera
+  hosts: all
+  become: yes  # Omogućava korišćenje sudo
+  become_method: sudo  # Eksplicitno kaže Ansible-u da koristi sudo
+  become_user: root  # Postaje root preko sudo
   vars:
     ansible_remote_tmp: /tmp
   tasks:
