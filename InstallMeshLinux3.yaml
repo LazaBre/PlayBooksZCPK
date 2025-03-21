@@ -15,19 +15,3 @@
       file:
         path: /tmp/meshinstall.sh
         mode: '755'
-        
-    - name: Run shell script on remote server
-      shell: sh /tmp/meshinstall.sh
-    
-    - name: Pokreni install.sh sa varijablama kao argumentima
-      shell: sudo /tmp/meshinstall.sh {{ arg1 }} {{ arg2 }}
-      args:
-        chdir: /tmp
-      vars:
-        arg1: https://192.168.1.16:1025
-        arg2: qEthAYo$yu4xp0n9yjlRny9JJFJTKNDdJjaFaymEY9wCgKEpPK7@5l2AARxutNmu
-
-    - name: Clean up the installation script
-      file:
-        path: /tmp/meshinstall.sh
-        state: absent  # Briše instalacioni skript nakon uspešnog instaliranja MeshAgent-a
