@@ -3,9 +3,6 @@
   hosts: all  # Ovde postaviti naziv ili IP adresu mašine
   become: yes            # Koristi sudo za komande
   become_user: Admin     # Izvrši komande kao Admin korisnik
-  become_method: sudo    # Koristi sudo kao metod za izvršenje komandi
-  environment:
-    HOME: /tmp           # Postavljanje HOME direktorijuma na /tmp
   vars:
     ansible_remote_tmp: /tmp  # Postavljanje privremenog direktorijuma za Ansible
   tasks:
