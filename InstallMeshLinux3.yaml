@@ -14,4 +14,4 @@
     - name: Give execute permission to /tmp/meshinstall.sh
       file:
         path: /tmp/meshinstall.sh
-        mode: 'u+x'
+        mode: '755'
