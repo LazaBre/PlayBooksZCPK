@@ -1,0 +1,40 @@
+---
+- name: Install MeshAgent on LinuxMint as Admin user
+  hosts: linuxmint_host  # Ovde postaviti naziv ili IP adresu mašine
+  become: yes            # Koristi sudo za komande
+  become_user: Admin     # Izvrši komande kao Admin korisnik
+  become_method: sudo    # Koristi sudo kao metod za izvršenje komandi
+  tasks:
+    - name: Proveri da li je MeshInstaliran
+      stat:
+        path: /usr/local/mesh_services/meshagent/meshagent  # Proveravamo da li je MeshAgent instaliran (putanja može biti različita)
+      register: meshagent_stat
+
+    - name: Preskoci instalaciju ako je vec instaliran
+      debug:
+        msg: "Mes je vec instaliran, preskacem ovaj zadatak!"
+      when: meshagent_stat.stat.exists
+
+    - name: Skidanje mesh skripte sa servera
+      command: curl -k "https://192.168.1.16:1025/meshagents?script=1" -o /tmp/meshinstall.sh
+      args:
+        creates: /tmp/meshinstall.sh   # Ova opcija će preskočiti komandu ako je fajl već preuzet
+      when: not meshagent_stat.stat.exists
+
+    - name: Make the installation script executable
+      command: chmod +x /tmp/meshinstall.sh
+      args:
+        creates: /tmp/meshinstall.sh   # Ova opcija će preskočiti komandu ako je već izvršni fajl
+      when: not meshagent_stat.stat.exists
+
+    - name: Run the MeshAgent installation script
+      command: /tmp/meshinstall.sh https://192.168.1.16:1025 'qEthAYo$yu4xp0n9yjlRny9JJFJTKNDdJjaFaymEY9wCgKEpPK7@5l2AARxutNmu'
+      args:
+        creates: /tmp/meshinstall.sh   # Ova opcija će preskočiti komandu ako je skripta već izvršena
+      when: not meshagent_stat.stat.exists
+
+    - name: Clean up the installation script
+      file:
+        path: /tmp/meshinstall.sh
+        state: absent  # Briše instalacioni skript nakon uspešnog instaliranja MeshAgent-a
+      when: not meshagent_stat.stat.exists
