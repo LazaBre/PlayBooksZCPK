@@ -4,7 +4,7 @@
   become: yes
   tasks:
     - name: Pokreni install.sh skriptu sa argumentima
-      command: ./meshinstall.sh https://192.168.1.16:1025 'asdf'
+      command: ./meshinstall.sh https://192.168.1.16:1025 'qEthAYo$yu4xp0n9yjlRny9JJFJTKNDdJjaFaymEY9wCgKEpPK7@5l2AARxutNmu'
       args:
         chdir: /tmp
       register: install_output
