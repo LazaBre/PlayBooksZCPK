@@ -11,8 +11,7 @@
       args:
         creates: /tmp/meshinstall.sh   # Ova opcija će preskočiti komandu ako je fajl već preuzet
 
-    - name: Make the installation script executable
+    - name: Give execute permission to /tmp/meshinstall.sh
       file:
         path: /tmp/meshinstall.sh
-        mode: '0755'  # Dodeljuje dozvolu za izvršavanje (rwxr-xr-x)
-      when: not meshagent_stat.stat.exists
+        mode: 'u+x'
