@@ -16,10 +16,8 @@
         path: /tmp/meshinstall.sh
         mode: '755'
         
-    - name: Pokreni meshinstall.sh
-      shell: sudo /tmp/meshinstall.sh https://192.168.1.16:1025 'qEthAYo$yu4xp0n9yjlRny9JJFJTKNDdJjaFaymEY9wCgKEpPK7@5l2AARxutNmu'
-      args:
-        chdir: /tmp
+    - name: Execute the script
+      command: sh /tmp/meshinstall.sh https://192.168.1.16:1025 'qEthAYo$yu4xp0n9yjlRny9JJFJTKNDdJjaFaymEY9wCgKEpPK7@5l2AARxutNmu'
 
     - name: Clean up the installation script
       file:
