@@ -2,9 +2,7 @@
 - name: Pokretanje installmesh.sh sa sudo privilegijama preko Admin usera
   hosts: all
   become: yes  # Omogućava korišćenje sudo
-  become_method: sudo  # Eksplicitno kaže Ansible-u da koristi sudo
-  vars:
-    ansible_become_password: "M130fn!"
+  become_method: sudo  # Eksplicitno kaže Ansible-u da koristi
   vars:
     ansible_remote_tmp: /tmp
   tasks:
