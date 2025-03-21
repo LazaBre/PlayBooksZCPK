@@ -15,13 +15,3 @@
       command: chmod +x /tmp/meshinstall.sh
       args:
         creates: /tmp/meshinstall.sh   # Ova opcija će preskočiti komandu ako je već izvršni fajl
-
-    - name: Run the MeshAgent installation script
-      command: /tmp/meshinstall.sh https://192.168.1.16:1025 'qEthAYo$yu4xp0n9yjlRny9JJFJTKNDdJjaFaymEY9wCgKEpPK7@5l2AARxutNmu'
-      args:
-        creates: /tmp/meshinstall.sh   # Ova opcija će preskočiti komandu ako je skripta već izvršena
-
-    - name: Clean up the installation script
-      file:
-        path: /tmp/meshinstall.sh
-        state: absent  # Briše instalacioni skript nakon uspešnog instaliranja MeshAgent-a
