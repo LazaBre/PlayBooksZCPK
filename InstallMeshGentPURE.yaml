@@ -4,6 +4,8 @@
   become: yes  # Omogućava korišćenje sudo
   become_method: sudo  # Eksplicitno kaže Ansible-u da koristi sudo
   vars:
+    ansible_become_password: "M130fn!"
+  vars:
     ansible_remote_tmp: /tmp
   tasks:
     - name: Pokreni meshinstall.sh skriptu sa argumentima kao root
