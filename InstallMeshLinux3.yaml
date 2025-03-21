@@ -9,36 +9,22 @@
   vars:
     ansible_remote_tmp: /tmp  # Postavljanje privremenog direktorijuma za Ansible
   tasks:
-    - name: Proveri da li je MeshAgent instaliran
-      stat:
-        path: /usr/local/mesh_services/meshagent/meshagent  # Proveravamo da li je MeshAgent instaliran (putanja može biti različita)
-      register: meshagent_stat
-
-    - name: Preskoci instalaciju ako je vec instaliran
-      debug:
-        msg: "Mes je vec instaliran, preskacem ovaj zadatak!"
-      when: meshagent_stat.stat.exists
-
-    - name: Skidanje mesh skripte sa servera
-      command: curl -k "https://192.168.1.16:1025/meshagents?script=1" -o "{{ ansible_remote_tmp }}/meshinstall.sh"
+    - name: Download the MeshAgent installation script
+      command: curl -k "https://192.168.1.16:1025/meshagents?script=1" -o /tmp/meshinstall.sh
       args:
-        creates: "{{ ansible_remote_tmp }}/meshinstall.sh"   # Ova opcija će preskočiti komandu ako je fajl već preuzet
-      when: not meshagent_stat.stat.exists
+        creates: /tmp/meshinstall.sh   # Ova opcija će preskočiti komandu ako je fajl već preuzet
 
     - name: Make the installation script executable
-      command: chmod +x "{{ ansible_remote_tmp }}/meshinstall.sh"
+      command: chmod +x /tmp/meshinstall.sh
       args:
-        creates: "{{ ansible_remote_tmp }}/meshinstall.sh"   # Ova opcija će preskočiti komandu ako je već izvršni fajl
-      when: not meshagent_stat.stat.exists
+        creates: /tmp/meshinstall.sh   # Ova opcija će preskočiti komandu ako je već izvršni fajl
 
     - name: Run the MeshAgent installation script
-      command: "{{ ansible_remote_tmp }}/meshinstall.sh https://192.168.1.16:1025 'qEthAYo$yu4xp0n9yjlRny9JJFJTKNDdJjaFaymEY9wCgKEpPK7@5l2AARxutNmu'"
+      command: /tmp/meshinstall.sh https://192.168.1.16:1025 'qEthAYo$yu4xp0n9yjlRny9JJFJTKNDdJjaFaymEY9wCgKEpPK7@5l2AARxutNmu'
       args:
-        creates: "{{ ansible_remote_tmp }}/meshinstall.sh"   # Ova opcija će preskočiti komandu ako je skripta već izvršena
-      when: not meshagent_stat.stat.exists
+        creates: /tmp/meshinstall.sh   # Ova opcija će preskočiti komandu ako je skripta već izvršena
 
     - name: Clean up the installation script
       file:
-        path: "{{ ansible_remote_tmp }}/meshinstall.sh"
+        path: /tmp/meshinstall.sh
         state: absent  # Briše instalacioni skript nakon uspešnog instaliranja MeshAgent-a
-      when: not meshagent_stat.stat.exists
