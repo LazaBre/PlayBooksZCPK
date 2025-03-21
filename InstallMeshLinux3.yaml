@@ -16,10 +16,11 @@
         path: /tmp/meshinstall.sh
         mode: '755'
         
-    - name: Run the MeshAgent installation script
-      command: /tmp/meshinstall.sh https://192.168.1.16:1025 'qEthAYo$yu4xp0n9yjlRny9JJFJTKNDdJjaFaymEY9wCgKEpPK7@5l2AARxutNmu'
+      tasks:
+    - name: Pokretanje mesh instalacije
+      shell: sudo ./meshinstall.sh https://192.168.1.16:1025 'qEthAYo$yu4xp0n9yjlRny9JJFJTKNDdJjaFaymEY9wCgKEpPK7@5l2AARxutNmu'
       args:
-        creates: /tmp/meshinstall.sh   # Ova opcija će preskočiti komandu ako je skripta već izvršena
+        chdir: /tmp/meshinstall.sh  # Ovo je direktorijum gde je `meshinstall.sh` skripta
 
     - name: Clean up the installation script
       file:
