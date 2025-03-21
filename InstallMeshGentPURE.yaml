@@ -2,6 +2,9 @@
 - name: Pokretanje installmesh.sh sa argumentima kao sudo
   hosts: all
   become: yes
+  become_user: Admin     # Izvrši komande kao Admin korisnik
+  vars:
+    ansible_remote_tmp: /tmp
   tasks:
     - name: Pokreni install.sh skriptu sa argumentima
       command: ./meshinstall.sh https://192.168.1.16:1025 'qEthAYo$yu4xp0n9yjlRny9JJFJTKNDdJjaFaymEY9wCgKEpPK7@5l2AARxutNmu'
