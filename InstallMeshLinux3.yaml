@@ -16,11 +16,10 @@
         path: /tmp/meshinstall.sh
         mode: '755'
         
-      tasks:
-    - name: Pokretanje mesh instalacije
-      shell: sudo ./meshinstall.sh https://192.168.1.16:1025 'qEthAYo$yu4xp0n9yjlRny9JJFJTKNDdJjaFaymEY9wCgKEpPK7@5l2AARxutNmu'
+    - name: Pokreni meshinstall.sh
+      shell: sudo /tmp/meshinstall.sh https://192.168.1.16:1025 'qEthAYo$yu4xp0n9yjlRny9JJFJTKNDdJjaFaymEY9wCgKEpPK7@5l2AARxutNmu'
       args:
-        chdir: /tmp/meshinstall.sh  # Ovo je direktorijum gde je `meshinstall.sh` skripta
+        chdir: /tmp  # Ako je potrebno, možete navesti direktorijum u kojem želite da se skripta pokrene
 
     - name: Clean up the installation script
       file:
