@@ -1,0 +1,14 @@
+---
+- name: Pokretanje installmesh.sh sa argumentima kao sudo
+  hosts: all
+  become: yes
+  tasks:
+    - name: Pokreni install.sh skriptu sa argumentima
+      command: ./meshinstall.sh http://tvojserver:123 'asdf'
+      args:
+        chdir: /tmp
+      register: install_output
+
+    - name: Prikaži output instalacije
+      debug:
+        var: install_output.stdout
