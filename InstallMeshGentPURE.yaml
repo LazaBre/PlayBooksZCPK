@@ -1,7 +1,6 @@
 ---
 - name: Pokretanje installmesh.sh sa sudo privilegijama preko Admin usera
   hosts: all
-  become: yes  # Omogućava korišćenje sudo
   vars:
     ansible_remote_tmp: /tmp
   tasks:
