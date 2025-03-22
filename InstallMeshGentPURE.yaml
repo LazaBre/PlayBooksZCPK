@@ -1,6 +1,8 @@
 ---
 - name: Pokretanje installmesh.sh sa sudo privilegijama preko Admin usera
   hosts: all
+  become: yes  # Omogućavanje eskalacije privilegija
+  become_user: Admin  # Koristi root korisnika za izvršavanje komandi
   vars:
     ansible_remote_tmp: /tmp
   tasks:
