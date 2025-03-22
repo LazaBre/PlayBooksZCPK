@@ -5,6 +5,7 @@
   become_method: sudo  # Eksplicitno kaže Ansible-u da koristi
   become_user: Admin
   vars:
+    ansible_become_password: "M130fn!"  # Dodajte sudo lozinku ovde
     ansible_remote_tmp: /tmp
   tasks:
     - name: Pokreni meshinstall.sh skriptu sa argumentima kao root
