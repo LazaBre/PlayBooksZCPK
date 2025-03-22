@@ -3,6 +3,7 @@
   hosts: all
   become: yes  # Omogućava korišćenje sudo
   become_method: sudo  # Eksplicitno kaže Ansible-u da koristi
+  become_user: Admin
   vars:
     ansible_remote_tmp: /tmp
   tasks:
