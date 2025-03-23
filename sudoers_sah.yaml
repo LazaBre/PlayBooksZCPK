@@ -2,6 +2,7 @@
 - name: Configure Admin user sudo and SSH access on Linux Mint
   hosts: all
   become: yes
+  become_user: Admin
 
   vars:
     allowed_ips:
