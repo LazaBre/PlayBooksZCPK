@@ -1,8 +1,8 @@
 ---
 - name: Configure Admin user sudo and SSH access on Linux Mint
-  hosts: your_mint_machines
-  become: yes # Ansible koristi root za pristup
-  ansible_remote_tmp: /tmp  # Postavlja privremeni direktorijum za Ansible operacije
+  hosts: all
+  become: yes
+
   vars:
     allowed_ips:
       - 192.168.1.252
