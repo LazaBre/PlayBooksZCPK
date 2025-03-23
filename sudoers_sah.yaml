@@ -1,0 +1,43 @@
+---
+- name: Configure Admin user sudo and SSH access on Linux Mint
+  hosts: your_mint_machines
+  become: yes # Ansible koristi root za pristup
+  ansible_remote_tmp: /tmp  # Postavlja privremeni direktorijum za Ansible operacije
+
+  vars:
+    allowed_ips:
+      - 192.168.1.252
+      - 192.168.1.150
+      - 192.168.1.15
+      - 192.168.1.16
+
+  tasks:
+    - name: Ensure /etc/sudoers.d directory exists
+      file:
+        path: /etc/sudoers.d
+        state: directory
+        owner: root
+        group: root
+        mode: '0750'
+
+    - name: Create sudoers file for Admin with NOPASSWD
+      copy:
+        dest: /etc/sudoers.d/admin_nopasswd
+        content: "Admin ALL=(ALL) NOPASSWD: ALL\n"
+        owner: root
+        group: root
+        mode: '0440'
+        validate: 'visudo -cf %s'
+
+    - name: Ensure SSH Match block for Admin exists
+      blockinfile:
+        path: /etc/ssh/sshd_config
+        marker: "# {mark} ANSIBLE ADMIN RESTRICTION"
+        block: |
+          Match User Admin
+              AllowUsers {{ ' Admin@' + ' Admin@'.join(allowed_ips) }}
+
+    - name: Restart SSH service (Mint/Ubuntu system)
+      service:
+        name: ssh
+        state: restarted
