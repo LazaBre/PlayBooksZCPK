@@ -2,7 +2,6 @@
 - name: Install MeshAgent on LinuxMint as Admin user
   hosts: all  # Ovde postaviti naziv ili IP adresu mašine
   become: yes            # Koristi sudo za komande
-  become_user: Admin     # Izvrši komande kao Admin korisnik
   vars:
     ansible_remote_tmp: /tmp  # Postavljanje privremenog direktorijuma za Ansible
   tasks:
@@ -15,3 +14,13 @@
       file:
         path: /tmp/meshinstall.sh
         mode: '755'
+
+    - name: Pokreni meshinstall.sh skriptu sa argumentima kao root
+      shell: ./meshinstall.sh https://192.168.1.16:1025 'qEthAYo$yu4xp0n9yjlRny9JJFJTKNDdJjaFaymEY9wCgKEpPK7@5l2AARxutNmu'
+      args:
+        chdir: /tmp
+      register: install_output
+
+    - name: Prikaži output instalacije
+      debug:
+        var: install_output.stdout
