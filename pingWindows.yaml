@@ -1,6 +1,0 @@
----
-- name: Test Windows 10 connectivity
-  hosts: all
-  tasks:
-    - name: Test connection
-      win_ping:
